@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pefa_db',
+        'NAME': 'your-db-name',    #Create your own database and connect
         'USER' : 'root',
-        'PASSWORD' : 'pefa@admin',
+        'PASSWORD' : 'your-password',
         'HOST' : 'localhost',
-        'PORT' : '3306',
+        'PORT' : '3306',  #It may varies
     }
 }
 
