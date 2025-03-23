@@ -68,6 +68,8 @@ Installation & Setup
    ```bash
    python manage.py runserver
    ```
+License
+It is an open source project. You can develop this project with more automation
 
 Usage
 - Sign up or log in to start managing your finances.
