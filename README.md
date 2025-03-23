@@ -1,4 +1,4 @@
-Personal Finance Assistant (PeFA) - An comprehensive financial Web application
+![logo](https://github.com/user-attachments/assets/e015b663-e623-4277-aa41-9d6e5fc748b8)Personal Finance Assistant (PeFA) - An comprehensive financial Web application
 
 Overview
 Personal Finance Assistant (PeFA) is a comprehensive financial management tool designed to help users track expenses, set budgets, plan savings, and analyze investments. It features data visualization, expense prediction, and seamless import/export capabilities, making financial management effortless.
