@@ -1,0 +1,230 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Goals Manager</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        h1, h2 {
+            color: #4CAF50;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .goal-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            transition: transform 0.3s ease;
+        }
+
+        .goal-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .goal-card canvas {
+            width: 250px !important;
+            height: 250px !important;
+            margin: 20px auto;
+        }
+
+        .goal-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .goal-details {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #e53935;
+        }
+
+        .progress-bar-container {
+            height: 25px;
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .form-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .goal-details p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h1>Savings Goals</h1>
+
+        <!-- Add New Goal Form -->
+        <div class="form-container">
+            <h2>Add a New Savings Goal</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" name="add_goal">Save Goal</button>
+            </form>
+        </div>
+
+        <!-- Display Existing Goals -->
+        <h2>Your Existing Goals</h2>
+        {% for goal in goals %}
+            <div class="goal-card">
+                <div class="goal-title">{{ goal.title }}</div>
+                <canvas id="progressChart{{ goal.id }}" width="250" height="250"></canvas>
+                <div class="goal-details">
+                    <p>Goal Amount: <strong>${{ goal.goal_amount }}</strong></p>
+                    <p>Saved: <strong>${{ goal.saved_amount }}</strong></p>
+                    <p>Remaining: <strong>${{ goal.remaining_amount }}</strong></p>
+                    <p>Progress: <strong>{{ goal.progress }}%</strong></p>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: {{ goal.progress }}%">{{ goal.progress }}%</div>
+                    </div>
+                </div>
+
+                <!-- Add Saved Amount -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <br><center>
+                    <input type="number" name="saved_amount" placeholder="Enter amount to save" required>
+                    <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                    <button type="submit" name="update_saved_amount" class="btn btn-primary">Add Savings</button>
+                    <br><br>
+                </form>
+
+                <!-- Delete Goal -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                    <button type="submit" name="delete_goal" class="delete-btn">Delete Goal</button>
+                </form>
+            </center>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- JavaScript to initialize charts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% for goal in goals %}
+                var ctx = document.getElementById('progressChart{{ goal.id }}').getContext('2d');
+                var progressChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Saved', 'Remaining'],
+                        datasets: [{
+                            label: 'Goal Progress',
+                            data: [{{ goal.saved_amount }}, {{ goal.remaining_amount }}],
+                            backgroundColor: ['#36a2eb', '#ff6384'],
+                            hoverBackgroundColor: ['#6db8ff', '#ff8a98'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.raw.toFixed(2) + ' $';
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    }
+                });
+            {% endfor %}
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

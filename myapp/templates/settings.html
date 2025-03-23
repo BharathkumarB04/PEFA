@@ -1,0 +1,101 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+{% load filters %}
+
+<div class="container mt-5">
+    <h1 class="text-center fw-bold text-primary">Settings</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info text-center" id="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <!-- Currency Settings -->
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 mb-4" id="currency">
+                <h5 class="fw-bold">💱 Currency Preferences</h5><hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="currency" class="form-label">Select Currency:</label>
+                    <select name="currency" class="form-select">
+                        <option value="INR" {% if user_pref.currency == "INR" %}selected{% endif %}>₹ INR</option>
+                        <option value="USD" {% if user_pref.currency == "USD" %}selected{% endif %}>$ USD</option>
+                        <option value="EUR" {% if user_pref.currency == "EUR" %}selected{% endif %}>€ EUR</option>
+                        <option value="GBP" {% if user_pref.currency == "GBP" %}selected{% endif %}>£ GBP</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-3 w-100">Save Currency</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Info & Password -->
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 mb-4">
+                <h5 class="fw-bold">👤 User Profile</h5><hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    <button type="submit" name="update_user" class="btn btn-success w-100 mt-2">Update Profile</button>
+                </form>
+
+                <hr><br>
+
+                <h5 class="fw-bold">🔑 Change Password</h5><hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ password_form.as_p }}
+                    <button type="submit" name="change_password" class="btn btn-danger w-100 mt-2">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Data & Import -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 mb-4 text-center" id="currency" id="reset">
+                <h5 class="fw-bold">🗑️ Reset Data</h5><hr>
+                <p class="text-muted">This will delete all your transactions but keep your account.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="reset_data" class="btn btn-warning w-100">Reset Transactions</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 mb-4 text-center">
+                <h5 class="fw-bold">📂 Import Expenses</h5><hr>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ upload_form.as_p }}
+                    <button type="submit" name="import_data" class="btn btn-info w-100">Upload & Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account -->
+    <div class="text-center">
+        <div class="card shadow-sm p-4" id="currency">
+            <h5 class="fw-bold text-danger">⚠️ Delete Account</h5><hr>
+            <p class="text-muted">Once you delete, there is no going back. Be sure before proceeding.</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="delete_account" class="btn btn-danger w-100" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<style>
+    #currency{
+        margin-left: 50px;
+    }
+    #message{
+        margin-left: 70px;
+    }
+</style>
+{% endblock %}

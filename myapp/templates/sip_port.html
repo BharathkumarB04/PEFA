@@ -1,0 +1,79 @@
+{% extends "dashboard.html" %}
+{% block content %}
+{% load filters %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📈 SIP Portfolio</h2>
+
+    <!-- SIP Investment Form -->
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-3">➕ Add New SIP</h4>
+        <form method="post" class="needs-validation">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">SIP Name</label>
+                    {{ form.sip_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Scheme Code</label>
+                    {{ form.scheme_code }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Purchase Date</label>
+                    {{ form.purchase_date }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Invested Amount</label>
+                    {{ form.invested_amount }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Units Bought</label>
+                    {{ form.units_bought }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add SIP</button>
+        </form>
+    </div>
+
+    <!-- SIP Investments Table -->
+    <div class="card shadow-sm p-4">
+        <h3 class="mb-3">📊 Your SIP Investments</h3>
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Invested (₹)</th>
+                    <th>Units</th>
+                    <th>Current NAV (₹)</th>
+                    <th>Trend Chart</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sip in sip_list %}
+                <tr>
+                    <td>{{ sip.sip_name }}</td>
+                    <td>₹{{ sip.invested_amount }}</td>
+                    <td>{{ sip.units_bought }}</td>
+                    <td>₹{{ sip.current_nav }}</td>
+                    <td>
+                        {% if sip.id in sip_charts %}
+                            <img src="data:image/png;base64,{{ sip_charts|get_item:sip.id }}" alt="SIP NAV Trend" width="450">
+                        {% else %}
+                            No Data available
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_sip' sip.id %}" class="btn btn-danger btn-sm">🗑 Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-muted">No SIP investments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

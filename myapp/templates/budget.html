@@ -1,0 +1,67 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<div class="container mt-4" >
+    <center><h1>Budget Planner</h1></center>
+
+    <!-- Success Message -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success mt-2" id="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Add Budget Form -->
+    <div class="card mt-4" style="margin-left: 20px;">
+        <div class="card-header bg-primary text-white">
+            Add New Budget
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Add Budget</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Budget Summary Table -->
+    <h2 class="mt-5">Existing Budgets</h2>
+    {% if budgets %}
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Year</th>
+                    <th>Month</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                    <tr>
+                        <td>{{ budget.category }}</td>
+                        <td>{{ budget.amount }}</td>
+                        <td>{{ budget.year }}</td>
+                        <td>{{ budget.month }}</td>
+                        <td>
+                            <!-- Delete button -->
+                            <form action="{% url 'delete_budget' budget.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="mt-3">No budgets added yet. Start by adding a new budget above.</p>
+    {% endif %}
+</div>
+<style>
+    #message{
+        margin-left: 70px;
+    }
+</style>
+{% endblock %}

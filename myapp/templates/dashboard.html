@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    {% load static %}
+    {%  load filters %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class='dashboard'>
+        <div class="dashboard-nav" >
+                <center><i class="fas fa-anchor"></i> <span><a href="{% url 'home' %}"></a><img src="{% static 'assets/images/logo.jpg' %}" id="logo" alt="logo" width="190" height="70"></span></a></header><br><br></center>
+                <a href="{% url 'home' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <div class='dashboard-nav-dropdown'><a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-arrow-left-right"></i> Transactions </a>
+                  <div class='dashboard-nav-dropdown-menu'>
+                  <a href="{% url 'transaction' %}" class="dashboard-nav-dropdown-item">Add/Delete Expense</a>
+                  <a href="{% url 'upload_bill' %}" class="dashboard-nav-dropdown-item">Add Expense using Bill</a>
+                  <a href="{% url 'dashboard' %}" class="dashboard-nav-dropdown-item">Report Analysis</a>
+                </div>
+                </div>
+                <div class='dashboard-nav-dropdown'><a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-cash-coin"></i> Investment planner </a>
+                  <div class='dashboard-nav-dropdown-menu'>
+                  <a href="{% url 'stock_list' %}" class="dashboard-nav-dropdown-item">Stock Price list</a>
+                  <a href="{% url 'sip_portfolio' %}" class="dashboard-nav-dropdown-item">SIP Portfolio</a>
+                </div>
+                </div>
+                <a href="{% url 'savings_goals' %}" class="dashboard-nav-item"><i class="bi bi-piggy-bank-fill"></i>Savings Goal manager</a>
+                <a href="{% url 'budget_management' %}" class="dashboard-nav-item"><i class="bi bi-wallet2"></i>Budget Planner</a>
+                <a href="{% url 'prediction' %}" class="dashboard-nav-item"><i class="bi bi-cash"></i>Expense Predictor</a>
+                <div class='dashboard-nav-dropdown'><a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="bi bi-tools"></i>Tools</a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <a href="{% url 'sip_calc' %}" class="dashboard-nav-dropdown-item">SIP Calculator</a>
+                    <a href="{% url 'loan_calc' %}" class="dashboard-nav-dropdown-item">Loan/EMI Calculator</a>
+                </div>
+                </div>
+                <div class='dashboard-nav-dropdown'><a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="bi bi-person-raised-hand"></i>Help</a>
+                    <div class='dashboard-nav-dropdown-menu'><a href="{% url 'faq_chatbot' %}" class="dashboard-nav-dropdown-item">FAQ Chatbot</a>
+                    </div>
+                </div>
+                <a href="{% url 'settings' %}" class="dashboard-nav-item "><i class="fas fa-cogs"></i> Settings </a>
+              <div class="nav-item-divider"></div>
+              <a
+                        href="{% url 'logout_view' %}" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout </a>
+            </nav>
+        </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle"><i class="fa fa-bars" style="font-size:26px"></i></a><b id="name">Personal Finance Assistant (PeFA)</b>
+            </header>
+            {% block content %}
+            <div class='dashboard-content'>
+                <div class='container'>
+                    <div class='card'>
+                        <div class='card-header'>
+                            <h1 class="text-xl font-bold mb-2">---Welcome {{ username }}---</h1>
+                            <body class="bg-gray-100 font-roboto">
+                                <div class="container mx-auto p-4">
+                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                  <div class="bg-white p-6 rounded-lg shadow-md">
+                                   <h2 class="text-xl font-bold mb-2">
+                                    Total Balance
+                                   </h2>
+                                   <p class="text-3xl font-semibold">
+                                    {{ balance|currency_format:request.user }}
+                                   </p>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-lg shadow-md">
+                                   <h2 class="text-xl font-bold mb-2">
+                                    Total Transactions
+                                   </h2>
+                                   <p class="text-3xl font-semibold">
+                                    {{ total_transactions }}
+                                   </p>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-lg shadow-md">
+                                   <h2 class="text-xl font-bold mb-2">
+                                    Monthly Budget
+                                   </h2>
+                                   <p class="text-3xl font-semibold">
+                                    {{total_budget|currency_format:request.user }}
+                                   </p>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-lg shadow-md">
+                                   <h2 class="text-xl font-bold mb-2">
+                                    Total Expense
+                                   </h2><p class="text-3xl font-semibold">
+                                    {{ total_expense|currency_format:request.user }}
+                                   </p>
+                                  </div>
+                                 </div>  
+                                </div>
+                                <h2 class="text-xl font-bold mb-4">📊 <b>Financial Health Score</b></h2>
+                                <div> 
+                                    <h2 class="text-xl font-bold mb-4">Your Score: <b>{{score|floatformat:2 }}</b>/100</h2>
+                                    <h3>🎖️ Badge: <b>{{ badge }}</b></h3>
+                                </div>
+                                <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                style="width: {{ score }}%;" 
+                                aria-valuenow="{{score }}" 
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ score|floatformat:2 }}%
+                                </div>
+                                </div>     
+                                </div>
+                                 <div class="bg-white p-6 rounded-lg shadow-md mb-4">
+                                  <h2 class="text-xl font-bold mb-4">
+                                   Past Expenses
+                                  </h2>
+                                  <div class="overflow-x-auto">
+                                   <table class="min-w-full bg-white">
+                                    <thead>
+                                     <tr>
+                                      <th class="py-2 px-4 border-b">
+                                       Date
+                                      </th>
+                                      <th class="py-2 px-4 border-b">
+                                       Bill
+                                      </th>
+                                      <th class="py-2 px-4 border-b">
+                                       Description/category
+                                      </th>
+                                      <th class="py-2 px-4 border-b">
+                                       Amount
+                                      </th>
+                                      <th>
+                                        Delete
+                                      </th>
+                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for expense in expenses %}
+                                     <tr>
+                                      <td class="py-2 px-4 border-b">
+                                       {{expense.date}}
+                                      </td>
+                                      <td class="py-2 px-4 border-b">
+                                        {% if expense.uploaded_bill %}
+                                        <a href="{{ expense.uploaded_bill.url}}" target="_blank">View | </a>
+                                        <a href="{{expense.uploaded_bill.url}}" download="">Download</a>
+                                        {% else %}
+                                        No Bill uploaded
+                                        {% endif %}
+                                      </td>
+                                      <td class="py-2 px-4 border-b">
+                                       {{expense.title}}
+                                      </td>
+                                      <td class="py-2 px-4 border-b">
+                                       {{ expense.amount|currency_format:request.user }}
+                                      </td>
+                                      <td>
+                                        <form action="{% url 'delete_expense' expense.id %}" style="display:inline" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure to delete?');">
+                                                Delete
+                                            </button>
+                                        </form>
+                                      </td>
+                                     </tr>
+                                     {% endfor %}
+                                     <tr>
+                                     </tr>
+                                    </tbody>
+                                   </table>
+                                  </div>
+                                 </div>
+                                </div>
+                              
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <style>
+        :root {
+    --font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+
+#logo{
+    float: left;
+    margin-left: 20px;
+}
+*, *::before, *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.btn-dark:hover {
+    background-color: #555;
+}
+
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+nav {
+    display: block;
+}
+
+body {
+    margin: 0;
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #515151;
+    text-align: left;
+    background-color: #e9edf4;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: #3f84fc;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+a:hover {
+    color: #0458eb;
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Nunito", sans-serif;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h1, .h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+}
+
+.card {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+}
+
+.card-body {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    text-align: center;
+}
+
+.dashboard {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 100vh;
+}
+
+
+
+.dashboard-app {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-flex: 2;
+    -webkit-flex-grow: 2;
+    -ms-flex-positive: 2;
+    flex-grow: 2;
+    margin-top: 84px;
+}
+
+.dashboard-content {
+    -webkit-box-flex: 2;
+    -webkit-flex-grow: 2;
+    -ms-flex-positive: 2;
+    flex-grow: 2;
+    padding: 25px;
+}
+
+.dashboard-nav {
+    min-width: 238px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: #373193;
+}
+
+.dashboard-compact .dashboard-nav {
+    display: none;
+}
+
+#name{
+    padding-left: 60%;
+    font-size:x-large;
+}
+.dashboard-nav header {
+    min-height: 84px;
+    padding: 8px 27px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.dashboard-nav header .menu-toggle {
+    display: none;
+    margin-right: auto;
+}
+
+.dashboard-nav a {
+    color: #515151;
+}
+
+.dashboard-nav a:hover {
+    text-decoration: none;
+}
+
+.dashboard-nav {
+    background-color: #1D515D;
+}
+
+.dashboard-nav a {
+    color: #fff;
+}
+
+.brand-logo {
+    font-family: "Nunito", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    color: #515151;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.brand-logo:focus, .brand-logo:active, .brand-logo:hover {
+    color: #dbdbdb;
+    text-decoration: none;
+}
+
+.brand-logo i {
+    color: #d2d1d1;
+    font-size: 27px;
+    margin-right: 10px;
+}
+
+.dashboard-nav-list {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.dashboard-nav-item {
+    min-height: 56px;
+    padding: 8px 20px 8px 70px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    letter-spacing: 0.02em;
+    transition: ease-out 0.5s;
+}
+
+.dashboard-nav-item i {
+    width: 36px;
+    font-size: 19px;
+    margin-left: -40px;
+}
+
+.dashboard-nav-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-nav-dropdown {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.dashboard-nav-dropdown.show {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-toggle {
+    font-weight: bold;
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-toggle:after {
+    -webkit-transform: none;
+    -o-transform: none;
+    transform: none;
+}
+
+.dashboard-nav-dropdown.show > .dashboard-nav-dropdown-menu {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.dashboard-nav-dropdown-toggle:after {
+    content: "";
+    margin-left: auto;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(81, 81, 81, 0.8);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.dashboard-nav .dashboard-nav-dropdown-toggle:after {
+    border-top-color: rgba(255, 255, 255, 0.72);
+}
+
+.dashboard-nav-dropdown-menu {
+    display: none;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.dashboard-nav-dropdown-item {
+    min-height: 40px;
+    padding: 8px 20px 8px 70px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    transition: ease-out 0.5s;
+}
+
+.dashboard-nav-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.menu-toggle {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #443ea2;
+}
+
+.menu-toggle:hover, .menu-toggle:active, .menu-toggle:focus {
+    text-decoration: none;
+    color: #875de5;
+}
+
+.menu-toggle i {
+    font-size: 20px;
+}
+
+.dashboard-toolbar {
+    min-height: 84px;
+    background-color: #dfdfdf;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px 25px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.fa {
+    margin: 40px;
+    font-size: 14px;
+    color: #1D515D;
+  }
+  
+.nav-item-divider {
+    height: 1px;
+    margin: 1rem 0;
+    overflow: hidden;
+    background-color: rgba(236, 238, 239, 0.3);
+}
+
+@media (min-width: 992px) {
+    .dashboard-app {
+        margin-left: 238px;
+    }
+
+    .dashboard-compact .dashboard-app {
+        margin-left: 0;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: 15px 0px;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-nav {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1070;
+    }
+
+    .dashboard-nav.mobile-show {
+        display: block;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-nav header .menu-toggle {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
+}
+
+@media (min-width: 992px) {
+    .dashboard-toolbar {
+        left: 238px;
+    }
+
+    .dashboard-compact .dashboard-toolbar {
+        left: 0;
+    }
+}
+    </style>
+<script> 
+const mobileScreen = window.matchMedia("(max-width: 990px )");
+$(document).ready(function () {
+    $(".dashboard-nav-dropdown-toggle").click(function () {
+        $(this).closest(".dashboard-nav-dropdown")
+            .toggleClass("show")
+            .find(".dashboard-nav-dropdown")
+            .removeClass("show");
+        $(this).parent()
+            .siblings()
+            .removeClass("show");
+    });
+    $(".menu-toggle").click(function () {
+        if (mobileScreen.matches) {
+            $(".dashboard-nav").toggleClass("mobile-show");
+        } else {
+            $(".dashboard").toggleClass("dashboard-compact");
+        }
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+        let progressBar = document.getElementById("progressBar");
+        let score = parseFloat("{{ financial_score }}");  // Convert to a number
+        
+        if (!isNaN(score)) {  // Ensure it's valid
+            progressBar.style.width = score + "%";
+        }
+    });
+</script>
+</body>
+</html>

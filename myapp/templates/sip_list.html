@@ -1,0 +1,59 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<body class="container mt-5">
+    <h1 class="text-center mb-4">Stock Search</h1>
+    
+    <!-- Search Box -->
+    <form method="GET" class="d-flex justify-content-center mb-4">
+        <input type="text" name="q" class="form-control w-25 me-2" placeholder="Search Stock Symbol" required>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- Search Result -->
+    {% if stock_data %}
+    <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+        <div class="card-body text-center">
+            <h4 class="card-title">{{ stock_data.symbol }}</h4>
+            <p class="card-text"><strong>Price:</strong> ${{ stock_data.price }}</p>
+            <p class="card-text"><strong>High:</strong> ${{ stock_data.high }}</p>
+            <p class="card-text"><strong>Low:</strong> ${{ stock_data.low }}</p>
+            <p class="card-text"><strong>Volume:</strong> {{ stock_data.volume }}</p>
+            <a href="https://www.nasdaq.com/market-activity/stocks/{{ stock_data.symbol }}" class="btn btn-success mt-2" target="_blank">
+                Buy {{ stock_data.symbol }} Now
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Top 10 Best Stocks -->
+    <h3 class="text-center mt-4">📈 Top 10 Best Performing Stocks</h3>
+    <table class="table table-striped table-bordered mt-3">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Symbol</th>
+                <th>Company Name</th>
+                <th>Current Price ($)</th>
+                <th>Change (%)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            {% for stock in top_stocks %}
+            <tr>
+                <td>{{ stock.symbol }}</td>
+                <td>{{ stock.name }}</td>
+                <td>${{ stock.price }}</td>
+                <td class="{% if stock.change > 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ stock.change }}%
+                </td>
+                <td>
+                    <a href="https://www.nasdaq.com/market-activity/stocks/{{ stock.symbol }}" class="btn btn-success btn-sm" target="_blank">
+                        Buy Now
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}

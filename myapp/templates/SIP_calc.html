@@ -1,0 +1,59 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-roboto">
+    <div class="container mx-auto p-4">
+        <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+            <h1 class="text-2xl font-bold mb-4 text-center">SIP Calculator</h1>
+            <form id="sipForm" class="space-y-4">
+                <div>
+                    <label for="monthlyInvestment" class="block text-sm font-medium text-gray-700">Monthly Investment (₹)</label>
+                    <input type="number" id="monthlyInvestment" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter monthly investment">
+                </div>
+                <div>
+                    <label for="annualInterestRate" class="block text-sm font-medium text-gray-700">Annual Interest Rate (%)</label>
+                    <input type="number" id="annualInterestRate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter annual interest rate">
+                </div>
+                <div>
+                    <label for="investmentPeriod" class="block text-sm font-medium text-gray-700">Investment Period (Years)</label>
+                    <input type="number" id="investmentPeriod" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter investment period">
+                </div>
+                <div class="text-center">
+                    <button type="button" onclick="calculateSIP()" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Calculate
+                    </button>
+                </div>
+            </form>
+            <div id="result" class="mt-6 p-4 bg-gray-50 rounded-lg shadow-inner text-center hidden">
+                <h2 class="text-xl font-semibold">Maturity Amount: ₹<span id="maturityAmount"></span></h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateSIP() {
+            const P = parseFloat(document.getElementById('monthlyInvestment').value);
+            const r = parseFloat(document.getElementById('annualInterestRate').value) / 100 / 12;
+            const n = parseInt(document.getElementById('investmentPeriod').value) * 12;
+
+            if (isNaN(P) || isNaN(r) || isNaN(n)) {
+                alert('Please enter valid inputs');
+                return;
+            }
+
+            const maturityAmount = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+            document.getElementById('maturityAmount').innerText = maturityAmount.toFixed(2);
+            document.getElementById('result').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

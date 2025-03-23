@@ -1,0 +1,98 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .upload-container {
+        max-width: 450px;
+        margin: 50px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    .upload-container h2 {
+        color: #ff5e62;
+        font-weight: bold;
+    }
+    .file-input {
+        display: none;
+    }
+    .custom-file-upload {
+        background: #ff5e62;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .custom-file-upload:hover {
+        background: #e14e56;
+    }
+    .upload-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .upload-btn:hover {
+        background: #218838;
+    }
+    .description {
+        margin-top: 30px;
+        font-size: 16px;
+        text-align: left;
+        color: #555;
+    }
+    .alert-danger{
+        width: 75%;
+    }
+</style>
+
+<div class="container">
+    <h1 align="center">Add Expense using Image Recognition</h1>
+    <div class="upload-container">
+        <h2>Upload Your Bill</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file-upload" class="custom-file-upload">Choose File</label>
+            <input type="file" id="file-upload" name="bill_image" class="file-input" required>
+            <p id="file-name">No file chosen</p>
+            <button type="submit" class="upload-btn">Upload & Extract</button>
+        </form>
+    </div>
+
+    <div class="description mt-4">
+        <h4>How OCR Technology Works</h4>
+        <p>Optical Character Recognition (OCR) is a technology used to convert different types of documents—such as scanned paper documents, PDFs, or images captured by a digital camera—into editable and searchable data.</p>
+        <p>In this case, when you upload your bill, the OCR technology will scan the image and extract textual data from the printed or handwritten text in the image. This can then be processed to identify and categorize the items in the bill, as well as extract necessary information like price, date, and other details.</p>
+        <p>OCR is highly effective for automating data entry from images, reducing manual effort and improving accuracy. In our case, it helps you quickly upload and extract expenses from bills into your financial management system.</p>
+    </div>
+</div><center>
+<div>
+    <h5 class="alert alert-danger">MACHINE CAN MAKE MISTAKE.IF EXPENSE NOT EXTRACTED CORRECTLY, KINDLY GO WITH MANUAL EXPENSE ADDER.</h5>
+</div></center>
+
+<!-- Bootstrap JS and Popper (required for Bootstrap components) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<script>
+    document.getElementById("file-upload").addEventListener("change", function() {
+        var fileName = this.files[0] ? this.files[0].name : "No file chosen";
+        document.getElementById("file-name").textContent = fileName;
+    });
+</script>
+
+{% endblock %}

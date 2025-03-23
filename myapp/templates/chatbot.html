@@ -1,0 +1,69 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<h2 class="display-4 text-primary fw-bold text-center">FAQ Chatbot</h2>
+<!-- FAQ Buttons -->
+<div id="faq-container">
+    {% for faq in faqs %}
+        <button class="faq-btn" onclick="getFAQAnswer('{{ faq.question|escapejs }}')">
+            {{ faq.question }}
+        </button>
+    {% endfor %}
+</div>
+
+<!-- Answer Display -->
+<div id="faq-answer-container">
+    <p id="faq-answer">Click a question to see the answer.</p>
+</div>
+
+<!-- JavaScript to Fetch Answer -->
+<script>
+    function getFAQAnswer(question) {
+        fetch('/faq_answer/?question='+ encodeURIComponent(question))  // Send question to backend
+        .then(response => response.json())
+        .then(data => {
+            let answerBox = document.getElementById("faq-answer");
+            if (data.answer) {
+                answerBox.innerHTML = "<h2><b>Chatbot:  </b>" + data.answer + "</h2>";  // Use normal string concat
+            } else {
+                answerBox.innerHTML = "<p>No answer found.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+            document.getElementById("faq-answer").innerHTML = "<p>Failed to fetch answer.</p>";
+        });
+    }
+</script>
+<!-- Simple CSS for Styling -->
+<style>
+    #faq-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .faq-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .faq-btn:hover {
+        background-color: #0056b3;
+    }
+
+    #faq-answer-container {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+</style>
+
+{% endblock %}

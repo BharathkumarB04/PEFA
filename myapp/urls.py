@@ -1,0 +1,26 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('',views.login_view, name='login_view'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('signup/', views.signup_view, name='signup_view'),
+    path('forget/', views.forget_view, name='forget_view'),
+    path('home/', views.home, name='home'),
+    path('transaction/', views.transaction, name='transaction'),
+    path('Sip/',views.sip_calc, name ='sip_calc'),
+    path('loan/', views.loan_calc, name='loan_calc' ),
+    path('delete-expense/<int:expense_id>/', views.delete_expense, name='delete_expense'),
+    path('budget/', views.budget_management, name='budget_management'),
+    path('budget/delete/<int:budget_id>/', views.delete_budget, name='delete_budget'),
+    path('savings-goals/', views.savings_goals_view, name='savings_goals'),
+    path('upload-bill/', views.upload_bill, name='upload_bill'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('export/<str:format_type>/', views.export, name='export'),
+    path('prediction/', views.prediction, name='prediction'),
+    path("sip/", views.stock_list, name="stock_list"),
+    path('sip_portfolio/', views.sip_portfolio, name='sip_portfolio'),
+    path('sip_portfolio/delete/<int:sip_id>/', views.delete_sip, name='delete_sip'),
+    path('settings/', views.settings_view, name='settings'),
+    path('faq_answer/',views.faq_answer, name='faq_answer'),
+    path('faq/', views.faq_page, name='faq_chatbot'),
+]

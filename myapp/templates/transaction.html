@@ -1,0 +1,41 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Expense Tracker
+  </title>
+ </head>
+ <body><center>
+    <h1>Comprehensive Expense tracker by PeFA</h1>
+</center>
+    <form action="" method="POST" enctype="multipart/form-data" class="input-box">
+    {% csrf_token %}
+    {{form.as_p}}
+    <center>
+     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+      Add Expense
+     </button>
+     {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    </center>
+    </form>
+    <div>
+ </body>
+ <style>
+.input-box{
+    width: 450px;
+    height: 30px;
+    padding : 5px;
+    font-size: 18px;
+    align-self: center;
+}
+ </style>
+{% endblock %}

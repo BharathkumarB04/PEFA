@@ -1,0 +1,58 @@
+{% extends 'dashboard.html' %}
+
+{% block content %} <center>
+<h1>Expense Predictor</h1>
+<div>
+    <h5 class="alert alert-danger" style="margin-left: 30px;">NOTE: THIS PREDICTION WILL NOT SURE ABOUT YOUR EXPENSE. HOWEVER, THIS WILL BE USED TO CONTROL YOUR EXPENSE AND TRY TO SAVE MONEY EFFECTIVELY. </h5>
+</div></center>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Predicted Expense for Next Month</h3>
+                    <h2 class="text-primary">
+                        {% if predicted_expense == "Not enough data" %}
+                            Not enough data
+                        {% else %}
+                            <h1 class="text-primary">₹{{ predicted_expense }}</h1>
+                        {% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="description mt-4">
+        <h4 style="font-weight: bold;">📌 How Does This Work?</h4>
+        <p>Our Expense Predictor uses Machine Learning (ML) to analyze your past spending and predict next month’s total expense.</p>
+            <hr> <br>
+        <h4 style="font-weight: bold;">🔍 Technology Behind the Prediction</h4>
+        <ul>
+            <li>✅ Data Aggregation: We collect and analyze past expenses month-wise.</li>
+            <li>✅ Linear Regression Model: A simple ML model that predicts future expenses based on past spending trends.</li>
+            <li>✅ Self-Learning: As you enter more expenses, the model improves over time.</li>
+        </ul> <br>
+        <hr><br>     
+        <h4 style="font-weight: bold;">🚀 Benefits of Expense Prediction</h4>
+        <ul>
+            <li>✔ Budget Planning: Helps you plan your finances in advance.</li>
+            <li>✔ Spending Insights: Understand if your expenses are increasing or decreasing.</li>
+            <li>✔ Smart Savings: Adjust your budget based on expected future expenses.</li>
+        </ul> <br> <hr> <br>
+            <h4 style="font-weight: bold;">🛠️ How is This Implemented in PeFA?</h4>
+            
+            <p>We use past 3+ months of expenses to train a Machine Learning model.
+            
+                The model predicts next month’s expense based on spending patterns.
+                
+                This prediction is updated automatically every month.
+            </p><hr> <br>
+            <h3 style="font-weight: bold;">⚠️ Notes & Considerations </h3>
+            <ul>
+                <li>🔹 Accuracy depends on data: More past data = better predictions.</li>
+                <li>🔹 Does not factor external events: Sudden financial changes (e.g., unexpected purchases) are not considered.</li>
+                <li>🔹 A simple model: We use a lightweight approach to ensure fast performance.</li>
+            </ul>
+    </div><br><br>
+</div>
+{% endblock %}
