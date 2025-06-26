@@ -48,7 +48,7 @@ Tech Stack
 Installation & Setup
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-repo/pefa.git
+   git clone https://github.com/BharathkumarB04/pefa.git
    cd pefa
    ```
 2. **Set up Virtual Environment (Optional but Recommended):**
