@@ -79,5 +79,18 @@ Usage
 - Export or import financial data with ease.
 
 <h2>Screenshots</h2><br>
-<img src="images/signup.jpg" alt="Signup" width=400 height=200>
+<img src="images/signup.jpg" alt="Signup" width=500 height=400>
+<img src="images/login.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/expense.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/savings.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/dashboard.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/ocr.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/sip.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/port.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/report.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/predict.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/faq chatbot.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/loan calc.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/sip calc.jpg" alt="Signup" width=500 height=400><br>
+<img src="images/settings.jpg" alt="Signup" width=500 height=400><br>
 
