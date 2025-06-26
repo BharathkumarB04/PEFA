@@ -77,3 +77,7 @@ Usage
 - Use tools like EMI calculators and SIP trackers for financial insights.
 - Visualize your financial trends and predict future expenses.
 - Export or import financial data with ease.
+
+Screenshots
+<img src="images/signup.jpg" alt="Signup" width=100>
+
