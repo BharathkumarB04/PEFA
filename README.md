@@ -78,6 +78,6 @@ Usage
 - Visualize your financial trends and predict future expenses.
 - Export or import financial data with ease.
 
-Screenshots
-<img src="images/signup.jpg" alt="Signup" width=100>
+<h2>Screenshots</h2><br>
+<img src="images/signup.jpg" alt="Signup" width=400 height=200>
 
